@@ -12,6 +12,7 @@ const db = mysql.createConnection({
     port: 3306
 });
 
+
 // 获取所有专业
 router.get('/', (req, res) => {
     db.query('SELECT * FROM majors', (err, results) => {

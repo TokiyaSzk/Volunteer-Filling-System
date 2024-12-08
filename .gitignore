@@ -16,6 +16,12 @@
 # next.js
 /.next/
 /out/
+/client/package-lock.json
+
+
+# express.js
+/node_modules
+/serber/package-lock.json
 
 # production
 /build
