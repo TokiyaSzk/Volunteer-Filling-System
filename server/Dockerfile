@@ -5,7 +5,7 @@ FROM node:22
 WORKDIR /app
 
 # 复制 package.json 和 package-lock.json
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # 安装依赖
 RUN npm install

@@ -1,18 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const argon2 = require('argon2');
+const db = require('../db.js');
 
-// 创建数据库连接(dev)
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Caierh521.',
-    database: 'dev',
-    port: 3306
-});
+
 
 
 db.connect((err) => {
@@ -31,7 +25,8 @@ router.post('/register', async (req, res) => {
     const { username, password, email, score = null, region = null } = req.body;
 
     // 加密密码
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);库冲突
+    const hashedPassword = await argon2.hash(password);
 
     // 插入用户数据
     db.query(
@@ -65,7 +60,7 @@ router.post('/login', (req, res) => {
         }
 
         const user = results[0];
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await argon2.verify(user.password, password);
 
         if (!isPasswordValid) {
             res.status(401).send('Invalid credentials');
@@ -79,11 +74,12 @@ router.post('/login', (req, res) => {
             { expiresIn: '1h' }
         );
         res.json({ token });
+        console.log('Generated Token:', token);
     });
 });
 
 // 获取用户信息
-router.get('/profile', (req, res) => {
+router.get('/profile',async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
@@ -99,7 +95,7 @@ router.get('/profile', (req, res) => {
 
         // 获取用户数据
         db.query(
-            'SELECT id, username, email, score, region FROM users WHERE id = ?',
+            'SELECT username, email, score, region FROM users WHERE id = ?',
             [decoded.id],
             (err, results) => {
                 if (err) {
@@ -119,5 +115,61 @@ router.get('/profile', (req, res) => {
     });
 });
 
+// 用户更新完整信息（必须包含完整字段）
+router.put('/update', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
 
+    if (!token) {
+        res.status(401).send('Unauthorized');
+        return;
+    }
+
+    // 验证令牌
+    jwt.verify(token, 'your_jwt_secret', async (err, decoded) => {
+        if (err) {
+            res.status(401).send('Unauthorized');
+            return;
+        }
+
+        const userId = decoded.id;
+        const { username, email, password, score, region } = req.body;
+
+        // 检查所有字段是否提供
+        if (!username || !email || !password || score === undefined || !region) {
+            res.status(400).send('All fields (username, email, password, score, region) are required');
+            return;
+        }
+
+        try {
+            // 确保用户名唯一
+            const [existingUser] = await db.promise().query(
+                'SELECT * FROM users WHERE username = ? AND id != ?',
+                [username, userId]
+            );
+            if (existingUser.length > 0) {
+                res.status(400).send('Username already exists');
+                return;
+            }
+
+            // 加密新密码
+            const hashedPassword = await argon2.hash(password);
+
+            // 更新用户信息
+            const [results] = await db.promise().query(
+                `UPDATE users SET username = ?, email = ?, password = ?, score = ?, region = ? WHERE id = ?`,
+                [username, email, hashedPassword, score, region, userId]
+            );
+
+            if (results.affectedRows === 0) {
+                res.status(404).send('User not found');
+                return;
+            }
+
+            res.status(200).send('User information updated successfully');
+        } catch (err) {
+            console.error('Error updating user information:', err);
+            res.status(500).send('Internal Server Error');
+        }
+    });
+});
 module.exports = router;

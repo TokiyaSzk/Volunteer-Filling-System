@@ -1,15 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const router = express.Router();
-
-// 创建数据库连接(dev)
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Caierh521.',
-    database: 'dev',
-    port: 3306
-});
+const db = require('../db.js');
 
 // 添加学校
 router.post('/add', (req, res) => {

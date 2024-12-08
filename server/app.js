@@ -1,28 +1,15 @@
 const express = require('express');
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const port = 3001;
 const userRoutes = require('./api/user.js');
 const schoolRoutes = require('./api/school.js');
 const majorRoutes = require('./api/majors.js');
+const db = require('./db.js');
 
-// Mysql Connection to Docker
-// const db = mysql.createConnection({
-//     host: 'db',
-//     user: 'user',
-//     password: 'password',
-//     database: 'mydatabase',
-//     port: 3306
-// });
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Caierh521.',
-    port: 3306
-});
-
+app.use(cors()); // 默认允许所有源访问
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
