@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 
 interface userData {
+    id?:string;
     username?: string;
     email?: string;
     score?: number;
@@ -70,7 +71,6 @@ export default function UserProfilePage() {
             .then((result) => {
                 console.log(result);
                 setUserData(JSON.parse(result));
-                setDataDict(JSON.parse(result));
             })
             .catch((error) => console.error(error));
     }, []);
@@ -78,7 +78,7 @@ export default function UserProfilePage() {
     const editButtonOnClick = async () => {
         console.log(dataDict)
 
-        const url = "http://localhost:3001/api/user/update";
+        const url = "http://localhost:3001/api/user/update-password";
         const jsonData = JSON.stringify(dataDict);
         const requestOptions = {
             method: "PUT",
@@ -125,20 +125,8 @@ export default function UserProfilePage() {
                             <div className='w-[300px] h-[550px] bg-white rounded-2xl p-14 pt-8'>
                                 <div className='w-full text-center text-xl text-red-600 mb-8'>更改您的信息</div>
                                 <div className='space-y-2'>
-                                    <label htmlFor="username">用户名</label>
-                                    <input type="text" name="username" id="username" defaultValue={userData?.username} className="w-full mb-4 p-2 border rounded"
-                                        onChange={handleChange} />
                                     <label htmlFor="username">密码</label>
                                     <input type="password" name="password" id="username" className="w-full mb-4 p-2 border rounded"
-                                        onChange={handleChange} />
-                                    <label htmlFor="email">邮箱</label>
-                                    <input type="email" name="email" id="email" defaultValue={userData?.email} className="w-full mb-4 p-2 border rounded"
-                                        onChange={handleChange} />
-                                    <label htmlFor="score">分数</label>
-                                    <input type="number" name="score" id="score" defaultValue={userData?.score} className="w-full mb-4 p-2 border rounded"
-                                        onChange={handleChange} />
-                                    <label htmlFor="region">地区</label>
-                                    <input type="text" name="region" id="region" defaultValue={userData?.region} className="w-full mb-4 p-2 border rounded"
                                         onChange={handleChange} />
                                     <div className="w-full flex justify-center items-center space-x-5">
                                         <button className="rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300" onClick={() => setProfileEdit(false)}>取消</button>

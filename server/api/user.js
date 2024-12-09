@@ -95,7 +95,7 @@ router.get('/profile',async (req, res) => {
 
         // 获取用户数据
         db.query(
-            'SELECT username, email, score, region FROM users WHERE id = ?',
+            'SELECT id,username, email, score, region FROM users WHERE id = ?',
             [decoded.id],
             (err, results) => {
                 if (err) {
@@ -115,12 +115,13 @@ router.get('/profile',async (req, res) => {
     });
 });
 
-// 用户更新完整信息（必须包含完整字段）
-router.put('/update', async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1];
 
-    if (!token) {
-        res.status(401).send('Unauthorized');
+router.put('/update-password', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { password } = req.body;
+
+    if (!token || !password) {
+        res.status(400).send('Token, and password are required');
         return;
     }
 
@@ -132,44 +133,29 @@ router.put('/update', async (req, res) => {
         }
 
         const userId = decoded.id;
-        const { username, email, password, score, region } = req.body;
-
-        // 检查所有字段是否提供
-        if (!username || !email || !password || score === undefined || !region) {
-            res.status(400).send('All fields (username, email, password, score, region) are required');
-            return;
-        }
 
         try {
-            // 确保用户名唯一
-            const [existingUser] = await db.promise().query(
-                'SELECT * FROM users WHERE username = ? AND id != ?',
-                [username, userId]
-            );
-            if (existingUser.length > 0) {
-                res.status(400).send('Username already exists');
-                return;
-            }
 
             // 加密新密码
             const hashedPassword = await argon2.hash(password);
 
-            // 更新用户信息
-            const [results] = await db.promise().query(
-                `UPDATE users SET username = ?, email = ?, password = ?, score = ?, region = ? WHERE id = ?`,
-                [username, email, hashedPassword, score, region, userId]
+            // 更新密码
+            const [updateResults] = await db.promise().query(
+                'UPDATE users SET password = ? WHERE id = ?',
+                [hashedPassword, userId]
             );
 
-            if (results.affectedRows === 0) {
+            if (updateResults.affectedRows === 0) {
                 res.status(404).send('User not found');
                 return;
             }
 
-            res.status(200).send('User information updated successfully');
+            res.status(200).send('Password updated successfully');
         } catch (err) {
-            console.error('Error updating user information:', err);
+            console.error('Error updating password:', err);
             res.status(500).send('Internal Server Error');
         }
     });
 });
+
 module.exports = router;

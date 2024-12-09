@@ -7,6 +7,8 @@ const userRoutes = require('./api/user.js');
 const schoolRoutes = require('./api/school.js');
 const majorRoutes = require('./api/majors.js');
 const db = require('./db.js');
+const volunteer = require('./api/volunteer.js');
+const admission = require('./api/admission.js');
 
 
 app.use(cors()); // 默认允许所有源访问
@@ -18,12 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
-        return;
     }
     console.log('Connected to the MySQL database');
 });
 
 initDatabaseAndTable(db);
+
 
 app.get('/', (req, res) => {
     res.send('You have reached the Express server');
@@ -31,6 +33,8 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRoutes);
 app.use('/api/school', schoolRoutes);
 app.use('/api/major', majorRoutes);
+app.use('/api/volunteer', volunteer);
+app.use('/api/admission', admission);
 
 app.get('/init', (req, res) => {
     insertTestData(db);
@@ -81,6 +85,26 @@ function initDatabaseAndTable(db) {
             min_score INT,
             max_score INT,
             FOREIGN KEY (school_id) REFERENCES schools(id)
+        );`,
+        `CREATE TABLE IF NOT EXISTS applications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            school_id INT NOT NULL,
+            major_id INT NOT NULL,
+            priority INT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (school_id) REFERENCES schools(id),
+            FOREIGN KEY (major_id) REFERENCES majors(id)
+        );`,
+        `CREATE TABLE IF NOT EXISTS admissions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            school_id INT NOT NULL,
+            major_id INT NOT NULL,
+            batch INT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (school_id) REFERENCES schools(id),
+            FOREIGN KEY (major_id) REFERENCES majors(id)
         );`
     ];
     queries.forEach(query => {
