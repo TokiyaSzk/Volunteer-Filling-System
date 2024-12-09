@@ -32,8 +32,10 @@ export default function UserPage() {
             const response = await fetch(url, requestOptions);
             const result = await response.text();
             console.log(result);
+            window.location.href = "/user";
         } catch (error) {
             console.error("Error registering user:", error);
+            alert("注册失败")
         }
 
 

@@ -57,6 +57,7 @@ export default function VolunteerPage() {
     const submitButtonClicked = () => {
         console.log(volunteerData);
 
+        try{
         for (const data of volunteerData) {
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -74,6 +75,9 @@ export default function VolunteerPage() {
                 .then((response) => response.text())
                 .then((result) => console.log(result))
                 .catch((error) => console.error(error));
+        }}
+        catch(error){
+            console.error(error)
         }
     };
 

@@ -1,20 +1,25 @@
 "use client";
 import Link from 'next/link';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface userData {
-    id?:string;
+    id?: string;
     username?: string;
     email?: string;
     score?: number;
     region?: string;
 }
 
+interface volunteerData {
+    user_id?: string;
+    school_id?: string;
+    major_id?: string;
+    priority?: string;
+}
+
 function UserProfile(userData: userData) {
-
-
     return (
-        <div className="relative z-[1] p-6 mt-7 max-w-md mx-auto bg-white shadow-md rounded-lg text-gray-800">
+        <div className=" z-[1] p-6 mt-7 w-[500px] h-[500px] bg-white shadow-md rounded-lg text-gray-800">
             <div className="text-xl font-bold text-gray-900 border-b pb-3 mb-4">用户信息</div>
             <div className="flex justify-between items-center mb-4">
                 <span className="text-gray-600 font-medium">用户名:</span>
@@ -45,36 +50,149 @@ function UserProfile(userData: userData) {
     );
 }
 
+function UserVolunteer({ volunteerData }: { volunteerData: volunteerData[] }) {
+
+    const safeVolunteerData = volunteerData || []; // 如果未定义，则使用空数组
+    return (
+        <>
+            <div className="relative z-[1] w-[500px] p-6 mt-7 h-[500px] bg-white shadow-md rounded-lg text-gray-800">
+                {safeVolunteerData.map((volunteer, index) => (
+                    <div key={index}>
+                        <div className=''>
+                            <div className="text-xl font-bold text-gray-900 border-b pb-3 mb-4">志愿{index + 1}</div>
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="text-gray-600 font-medium">院校代码:</span>
+                                <span className="text-gray-800">{volunteer.school_id}</span>
+                            </div>
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="text-gray-600 font-medium">专业代码:</span>
+                                <span className="text-gray-800">{volunteer.major_id}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
+    )
+}
+
 export default function UserProfilePage() {
     const [dataDict, setDataDict] = useState<{ [key: string]: string }>({});
-    const [userData, setUserData] = useState<{ username?: string; email?: string; score?: number; region?: string } | null>(null);
+    const [userData, setUserData] = useState<userData | null>(null);
     const [profileEdit, setProfileEdit] = useState(false);
+    const [volunteerData, setVolunteerData] = useState<volunteerData[]>([]);
+    const [editVolunteer, setEditVolunteer] = useState(false);
+    const [volunteerResult, setVolunteerResult] = useState({
+        id: "",
+        user_id: "",
+        school_id: "暂无",
+        major_id: "暂无",
+        batch: "",
+    });
+
+
+    // 获取用户数据
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem("DevToken");
+                if (!token) {
+                    console.error("DevToken 不存在，请检查");
+                    return;
+                }
+
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", `Bearer ${token}`);
+
+                const response = await fetch("http://localhost:3001/api/user/profile", {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow" as RequestRedirect,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`获取用户数据失败: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log(result);
+                setUserData(result);
+            } catch (error) {
+                console.error("获取用户数据失败:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    // 获取志愿
+    useEffect(() => {
+        const fetchVolunteerData = async () => {
+            if (!userData || !userData.id) {
+                console.warn("userData 未初始化或 userData.id 不存在");
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `http://localhost:3001/api/volunteer/query?user_id=${userData.id}`,
+                    {
+                        method: "GET",
+                        redirect: "follow" as RequestRedirect,
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`获取志愿数据失败: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log(result);
+                setVolunteerData(result);
+            } catch (error) {
+                console.error("获取志愿数据失败:", error);
+            }
+        };
+
+        fetchVolunteerData();
+    }, [userData]); // 添加 userData 作为依赖
+
+
+    useEffect(() => {
+        if (userData) {
+            const requestOptions = {
+                method: "GET",
+                redirect: "follow" as RequestRedirect,
+            };
+
+            fetch(`http://localhost:3001/api/admission/results/${userData.id}`, requestOptions)
+                .then((response) => {
+                    if (response.status === 404) {
+                        console.warn("No results found (404)");
+                        return [];
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+                    if (result.length > 0) {
+                        setVolunteerResult(result[0]); // 提取第一个对象
+                        console.log(volunteerResult);
+                    } else {
+                        console.warn("No results found");
+                    }
+                })
+                .catch((error) => console.error(error));
+        }
+    }, [userData]);
+
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setDataDict({ ...dataDict, [name]: value })
     }
 
-
-    useEffect(() => {
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("DevToken"));
-
-        const requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "follow" as RequestRedirect,
-        };
-
-        fetch("http://localhost:3001/api/user/profile", requestOptions)
-            .then((response) => response.text())
-            .then((result) => {
-                console.log(result);
-                setUserData(JSON.parse(result));
-            })
-            .catch((error) => console.error(error));
-    }, []);
-
+    // Edit UserProfile Button click
     const editButtonOnClick = async () => {
         console.log(dataDict)
 
@@ -103,14 +221,36 @@ export default function UserProfilePage() {
 
     return (
         <>
-            <div className="relative z-[1] w-full h-[900px] text-black font-bold">
-                <div className='w-full h-24 text-center pt-10 text-2xl text-red-600'>请先确认你的信息，然后再点击填报志愿</div>
+            <div className="relative z-[1] w-full h-[1000px] text-black font-bold">
+                <div className='w-full h-24 text-center pt-10 text-2xl text-red-600 justify-center items-center'>请先确认你的信息，然后再点击填报志愿</div>
                 {userData ? (
                     <>
-                        <UserProfile {...userData} />
+                        <div>
+                            <div className='flex flex-row space-x-5 justify-center items-center'>
+                                <UserProfile {...userData} />
+                                <UserVolunteer volunteerData={volunteerData}></UserVolunteer>
+                            </div>
+                            <div className="w-[800px] p-6 mt-7  mx-auto bg-white shadow-md rounded-lg text-gray-800">
+                                <div className=" text-xl font-bold text-gray-900 border-b pb-3 mb-4">用户信息</div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <span className="text-gray-600 font-medium">录取院校:</span>
+                                    <span className="text-gray-800">{volunteerResult.school_id}</span>
+                                </div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <span className="text-gray-600 font-medium">录取院校:</span>
+                                    <span className="text-gray-800">{volunteerResult.major_id}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className='w-full h-20 flex justify-center items-center'>
                             <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
-                                <button onClick={() => { setProfileEdit(true) }}>更改信息</button>
+                                <button onClick={() => { setProfileEdit(true) }}>更改密码</button>
+                            </div>
+                            <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
+                                <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={() => setEditVolunteer(true)}>
+                                    更改志愿
+                                </button>
                             </div>
                         </div>
                     </>
@@ -119,11 +259,12 @@ export default function UserProfilePage() {
                         <h1 className="text-3xl">Loading...</h1>
                     </>
                 )}
+                {/* 更改密码 */}
                 {profileEdit && (
                     <>
                         <div className='fixed inset-0 w-screen h-screen z-[50] bg-gray-500 bg-opacity-20 flex justify-center items-center'>
                             <div className='w-[300px] h-[550px] bg-white rounded-2xl p-14 pt-8'>
-                                <div className='w-full text-center text-xl text-red-600 mb-8'>更改您的信息</div>
+                                <div className='w-full text-center text-xl text-red-600 mb-8'>更改您的密码</div>
                                 <div className='space-y-2'>
                                     <label htmlFor="username">密码</label>
                                     <input type="password" name="password" id="username" className="w-full mb-4 p-2 border rounded"
@@ -137,6 +278,26 @@ export default function UserProfilePage() {
                         </div>
                     </>
                 )}
+                {/* 更改志愿 */}
+                {editVolunteer && (
+                    <>
+                        <div className='fixed inset-0 w-screen h-screen z-[50] bg-gray-500 bg-opacity-20 flex justify-center items-center'>
+                            <div className='w-[300px] h-[550px] bg-white rounded-2xl p-14 pt-8'>
+                                <div className='w-full text-center text-xl text-red-600 mb-8'>更改您的密码</div>
+                                <div className='space-y-2'>
+                                    <label htmlFor="username">密码</label>
+                                    <input type="password" name="password" id="username" className="w-full mb-4 p-2 border rounded"
+                                        onChange={handleChange} />
+                                    <div className="w-full flex justify-center items-center space-x-5">
+                                        <button className="rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300" onClick={() => setEditVolunteer(false)}>取消</button>
+                                        <button className="rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300" onClick={editButtonOnClick}>更改</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )
+                }
             </div>
         </>
     )

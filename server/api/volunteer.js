@@ -122,4 +122,29 @@ router.put('/update/:id', (req, res) => {
     );
 });
 
+
+//查询志愿
+router.get('/query', (req, res) => {
+    const { user_id } = req.query;
+
+    if (!user_id) {
+        res.status(400).send('User ID is required');
+        return;
+    }
+
+    db.query(
+        'SELECT * FROM applications WHERE user_id = ?',
+        [user_id],
+        (err, results) => {
+            if (err) {
+                console.error('Error fetching applications:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            res.status(200).json(results);
+        }
+    );
+});
+
 module.exports = router;

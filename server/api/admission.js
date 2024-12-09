@@ -16,25 +16,11 @@ router.get('/', (req, res) => {
     res.send('You have reached the Admissions API');
 });
 
-// 查询所有录取结果
-router.get('/results', (req, res) => {
-    db.query(
-        'SELECT * FROM admissions',
-        (err, results) => {
-            if (err) {
-                console.error('Error fetching admissions:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            res.json(results);
-        }
-    );
-});
 
 // 查询某个学生的录取结果
 router.get('/results/:user_id', (req, res) => {
     const user_id = req.params.user_id;
-
+    console.log(user_id)
     db.query(
         'SELECT * FROM admissions WHERE user_id = ?',
         [user_id],
