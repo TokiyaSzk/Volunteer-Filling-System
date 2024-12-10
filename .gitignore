@@ -21,7 +21,7 @@
 
 # express.js
 /node_modules
-/serber/package-lock.json
+/server/package-lock.json
 
 # production
 /build
