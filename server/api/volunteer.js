@@ -123,28 +123,37 @@ router.put('/update/:id', (req, res) => {
 });
 
 
-//查询志愿
+// 查询志愿
 router.get('/query', (req, res) => {
-    const { user_id } = req.query;
+    const { user_id, school_id } = req.query;
 
-    if (!user_id) {
-        res.status(400).send('User ID is required');
+    // 检查是否只传递了其中一个参数
+    if ((user_id && school_id) || (!user_id && !school_id)) {
+        res.status(400).send('Please provide either user_id or school_id, but not both.');
         return;
     }
 
-    db.query(
-        'SELECT * FROM applications WHERE user_id = ?',
-        [user_id],
-        (err, results) => {
-            if (err) {
-                console.error('Error fetching applications:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
+    // 构建查询语句
+    let query = '';
+    let queryParam = null;
 
-            res.status(200).json(results);
+    if (user_id) {
+        query = 'SELECT * FROM applications WHERE user_id = ?';
+        queryParam = user_id;
+    } else if (school_id) {
+        query = 'SELECT * FROM applications WHERE school_id = ?';
+        queryParam = school_id;
+    }
+
+    // 执行查询
+    db.query(query, [queryParam], (err, results) => {
+        if (err) {
+            console.error('Error fetching applications:', err);
+            res.status(500).send('Internal Server Error');
+            return;
         }
-    );
-});
 
+        res.status(200).json(results);
+    });
+});
 module.exports = router;

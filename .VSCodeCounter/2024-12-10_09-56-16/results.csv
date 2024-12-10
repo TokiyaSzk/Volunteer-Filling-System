@@ -1,0 +1,13 @@
+"filename", "language", "JSON", "JavaScript", "Docker", "comment", "blank", "total"
+"/Applications/Myweb/Volunteer-Filling-System/server/Dockerfile", "Docker", 0, 0, 7, 7, 7, 21
+"/Applications/Myweb/Volunteer-Filling-System/server/api/admin.js", "JavaScript", 0, 136, 0, 11, 28, 175
+"/Applications/Myweb/Volunteer-Filling-System/server/api/admission.js", "JavaScript", 0, 167, 0, 14, 29, 210
+"/Applications/Myweb/Volunteer-Filling-System/server/api/majors.js", "JavaScript", 0, 84, 0, 5, 10, 99
+"/Applications/Myweb/Volunteer-Filling-System/server/api/school.js", "JavaScript", 0, 80, 0, 5, 16, 101
+"/Applications/Myweb/Volunteer-Filling-System/server/api/user.js", "JavaScript", 0, 120, 0, 11, 30, 161
+"/Applications/Myweb/Volunteer-Filling-System/server/api/volunteer.js", "JavaScript", 0, 119, 0, 8, 23, 150
+"/Applications/Myweb/Volunteer-Filling-System/server/app.js", "JavaScript", 0, 150, 0, 3, 20, 173
+"/Applications/Myweb/Volunteer-Filling-System/server/db.js", "JavaScript", 0, 15, 0, 8, 4, 27
+"/Applications/Myweb/Volunteer-Filling-System/server/package-lock.json", "JSON", 1100, 0, 0, 0, 1, 1101
+"/Applications/Myweb/Volunteer-Filling-System/server/package.json", "JSON", 20, 0, 0, 0, 1, 21
+"Total", "-", 1120, 871, 7, 72, 169, 2239

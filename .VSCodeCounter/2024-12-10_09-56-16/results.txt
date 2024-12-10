@@ -1,0 +1,39 @@
+Date : 2024-12-10 09:56:16
+Directory : /Applications/Myweb/Volunteer-Filling-System/server
+Total : 11 files,  1998 codes, 72 comments, 169 blanks, all 2239 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          2 |      1,120 |          0 |          2 |      1,122 |
+| JavaScript |          8 |        871 |         65 |        160 |      1,096 |
+| Docker     |          1 |          7 |          7 |          7 |         21 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                  | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                     |         11 |      1,998 |         72 |        169 |      2,239 |
+| . (Files)                                                             |          5 |      1,292 |         18 |         33 |      1,343 |
+| api                                                                   |          6 |        706 |         54 |        136 |        896 |
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                              | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Applications/Myweb/Volunteer-Filling-System/server/Dockerfile        | Docker     |          7 |          7 |          7 |         21 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/admin.js      | JavaScript |        136 |         11 |         28 |        175 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/admission.js  | JavaScript |        167 |         14 |         29 |        210 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/majors.js     | JavaScript |         84 |          5 |         10 |         99 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/school.js     | JavaScript |         80 |          5 |         16 |        101 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/user.js       | JavaScript |        120 |         11 |         30 |        161 |
+| /Applications/Myweb/Volunteer-Filling-System/server/api/volunteer.js  | JavaScript |        119 |          8 |         23 |        150 |
+| /Applications/Myweb/Volunteer-Filling-System/server/app.js            | JavaScript |        150 |          3 |         20 |        173 |
+| /Applications/Myweb/Volunteer-Filling-System/server/db.js             | JavaScript |         15 |          8 |          4 |         27 |
+| /Applications/Myweb/Volunteer-Filling-System/server/package-lock.json | JSON       |      1,100 |          0 |          1 |      1,101 |
+| /Applications/Myweb/Volunteer-Filling-System/server/package.json      | JSON       |         20 |          0 |          1 |         21 |
+| Total                                                                 |            |      1,998 |         72 |        169 |      2,239 |
++-----------------------------------------------------------------------+------------+------------+------------+------------+------------+

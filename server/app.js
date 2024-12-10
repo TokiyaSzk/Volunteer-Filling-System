@@ -9,6 +9,7 @@ const majorRoutes = require('./api/majors.js');
 const db = require('./db.js');
 const volunteer = require('./api/volunteer.js');
 const admission = require('./api/admission.js');
+const admin = require('./api/admin.js');
 
 
 app.use(cors()); // 默认允许所有源访问
@@ -35,6 +36,7 @@ app.use('/api/school', schoolRoutes);
 app.use('/api/major', majorRoutes);
 app.use('/api/volunteer', volunteer);
 app.use('/api/admission', admission);
+app.use('/api/admin', admin);
 
 app.get('/init', (req, res) => {
     insertTestData(db);
@@ -84,6 +86,7 @@ function initDatabaseAndTable(db) {
             school_id INT,
             min_score INT,
             max_score INT,
+            max_admissions INT,
             FOREIGN KEY (school_id) REFERENCES schools(id)
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
@@ -105,6 +108,13 @@ function initDatabaseAndTable(db) {
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (school_id) REFERENCES schools(id),
             FOREIGN KEY (major_id) REFERENCES majors(id)
+        );`,
+        `CREATE TABLE IF NOT EXISTS admin (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            school_id INT NOT NULL,
+            username VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            FOREIGN KEY (school_id) REFERENCES schools(id)
         );`
     ];
     queries.forEach(query => {
@@ -132,17 +142,17 @@ function insertTestData(db) {
 
     // 插入专业表数据
     const insertMajors = `
-      INSERT INTO majors (name, school_id, min_score, max_score) VALUES
-      ('Computer Science', 1, 600, 750),
-      ('Mechanical Engineering', 1, 620, 740),
-      ('Physics', 2, 610, 730),
-      ('Law', 4, 580, 690),
-      ('Medicine', 5, 650, 800),
-      ('Mathematics', 3, 590, 710),
-      ('Civil Engineering', 2, 600, 720),
-      ('Economics', 1, 580, 700),
-      ('Philosophy', 4, 570, 680),
-      ('Biology', 3, 600, 730);
+      INSERT INTO majors (name, school_id, min_score, max_score,max_admissions) VALUES
+      ('Computer Science', 1, 600, 750, 2),
+      ('Mechanical Engineering', 1, 620, 740, 2),
+      ('Physics', 2, 610, 730, 2),
+      ('Law', 4, 580, 690, 2),
+      ('Medicine', 5, 650, 800, 2),
+      ('Mathematics', 3, 590, 710, 2),
+      ('Civil Engineering', 2, 600, 720, 2),
+      ('Economics', 1, 580, 700, 2),
+      ('Philosophy', 4, 570, 680, 2),
+      ('Biology', 3, 600, 730, 2);
     `;
 
     // 执行插入操作

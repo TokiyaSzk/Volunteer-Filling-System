@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
 
 // 添加新专业
 router.post('/', (req, res) => {
-    const { name, school_id, min_score, max_score } = req.body;
+    const { name, school_id, min_score, max_score,max_admissions } = req.body;
 
     if (!name || !school_id || min_score === undefined || max_score === undefined) {
         res.status(400).send('Missing required fields');
@@ -42,8 +42,8 @@ router.post('/', (req, res) => {
     }
 
     db.query(
-        'INSERT INTO majors (name, school_id, min_score, max_score) VALUES (?, ?, ?, ?)',
-        [name, school_id, min_score, max_score],
+        'INSERT INTO majors (name, school_id, min_score, max_score,max_admissions) VALUES (?, ?, ?, ?,?)',
+        [name, school_id, min_score, max_score,max_admissions],
         (err, results) => {
             if (err) {
                 console.error('Error adding major:', err);
@@ -51,29 +51,6 @@ router.post('/', (req, res) => {
                 return;
             }
             res.status(201).json({ id: results.insertId, message: 'Major added successfully' });
-        }
-    );
-});
-
-// 更新专业信息
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
-    const { name, school_id, min_score, max_score } = req.body;
-
-    db.query(
-        'UPDATE majors SET name = ?, school_id = ?, min_score = ?, max_score = ? WHERE id = ?',
-        [name, school_id, min_score, max_score, id],
-        (err, results) => {
-            if (err) {
-                console.error('Error updating major:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            if (results.affectedRows === 0) {
-                res.status(404).send('Major not found');
-                return;
-            }
-            res.json({ message: 'Major updated successfully' });
         }
     );
 });

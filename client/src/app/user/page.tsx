@@ -1,7 +1,6 @@
 "use client";
 
 import AnimatedComponent from "@/component/AnimateComponent";
-import { parseJsonFile } from "next/dist/build/load-jsconfig";
 import { useState, useEffect } from "react";
 
 export default function UserPage() {
@@ -14,9 +13,12 @@ export default function UserPage() {
         setDataDict({ ...dataDict, [name]: value })
     }
 
+    const GoinRegister = async () => {
+        setRegister(true)
+    }
+
     const registerButtonClick = async () => {
         console.log(dataDict)
-
         const url = "http://localhost:3001/api/user/register";
         const jsonData = JSON.stringify(dataDict);
         const requestOptions = {
@@ -25,7 +27,6 @@ export default function UserPage() {
                 "Content-Type": "application/json",
             },
             body: jsonData,
-            redirect: "follow" as RequestRedirect,
         };
 
         try {
@@ -37,8 +38,6 @@ export default function UserPage() {
             console.error("Error registering user:", error);
             alert("注册失败")
         }
-
-
     }
     const loginButtonClick = async () => {
         console.log(dataDict)
@@ -49,8 +48,7 @@ export default function UserPage() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: jsonData,
-            redirect: "follow" as RequestRedirect,
+            body: jsonData
         };
 
         try {
@@ -59,11 +57,12 @@ export default function UserPage() {
             console.log(result);
             const tokenData = JSON.parse(result);
             const token = tokenData.token;
-            localStorage.setItem("DevToken", token);
+            localStorage.setItem("StudentToken", token);
             window.location.href = "/user/profile";
         } catch (error) {
             console.error("Error registering user:", error);
         }
+
 
     }
     return (
@@ -111,7 +110,7 @@ export default function UserPage() {
                                     onClick={registerButtonClick}>提交</button>
                             ) : (
                                 <>
-                                    <button onClick={() => setRegister(true)}>注册</button>
+                                    <button onClick={GoinRegister}>注册</button>
                                     <button className="px-6 py-3 text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:ring-4 focus:ring-blue-300 focus:outline-none"
                                         onClick={loginButtonClick}>登陆</button>
                                 </>

@@ -1,0 +1,24 @@
+"filename", "language", "TypeScript JSX", "CSS", "JSON with Comments", "TypeScript", "JSON", "Markdown", "XML", "JavaScript", "Docker", "comment", "blank", "total"
+"/Applications/Myweb/Volunteer-Filling-System/client/Dockerfile", "Docker", 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 7, 23
+"/Applications/Myweb/Volunteer-Filling-System/client/README.md", "Markdown", 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 14, 37
+"/Applications/Myweb/Volunteer-Filling-System/client/next.config.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 3, 8
+"/Applications/Myweb/Volunteer-Filling-System/client/package.json", "JSON", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 1, 26
+"/Applications/Myweb/Volunteer-Filling-System/client/postcss.config.mjs", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 7, 0, 1, 2, 10
+"/Applications/Myweb/Volunteer-Filling-System/client/public/file.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/Applications/Myweb/Volunteer-Filling-System/client/public/globe.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/Applications/Myweb/Volunteer-Filling-System/client/public/next.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/Applications/Myweb/Volunteer-Filling-System/client/public/vercel.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/Applications/Myweb/Volunteer-Filling-System/client/public/window.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/globals.css", "CSS", 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 4, 22
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/layout.tsx", "TypeScript JSX", 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 59
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/major/page.tsx", "TypeScript JSX", 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 72
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/page.tsx", "TypeScript JSX", 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 75
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/school/page.tsx", "TypeScript JSX", 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 135
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/school/profile/page.tsx", "TypeScript JSX", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 15
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/user/page.tsx", "TypeScript JSX", 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 127
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/user/profile/page.tsx", "TypeScript JSX", 315, 0, 0, 0, 0, 0, 0, 0, 0, 6, 40, 361
+"/Applications/Myweb/Volunteer-Filling-System/client/src/app/volunteer/page.tsx", "TypeScript JSX", 104, 0, 0, 0, 0, 0, 0, 0, 0, 2, 14, 120
+"/Applications/Myweb/Volunteer-Filling-System/client/src/component/AnimateComponent.tsx", "TypeScript JSX", 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 22
+"/Applications/Myweb/Volunteer-Filling-System/client/tailwind.config.ts", "TypeScript", 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 2, 20
+"/Applications/Myweb/Volunteer-Filling-System/client/tsconfig.json", "JSON with Comments", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 1, 28
+"Total", "-", 852, 18, 27, 22, 25, 23, 5, 7, 8, 18, 160, 1165

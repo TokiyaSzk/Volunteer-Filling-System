@@ -20,8 +20,7 @@ export default function MajorPage() {
 
         const requestOptions = {
             method: "GET",
-            headers: myHeaders,
-            redirect: "follow" as RequestRedirect,
+            headers: myHeaders
         };
 
         fetch("http://localhost:3001/api/major/", requestOptions)

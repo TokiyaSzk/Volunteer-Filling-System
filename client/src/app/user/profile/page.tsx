@@ -97,9 +97,9 @@ export default function UserProfilePage() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem("DevToken");
+                const token = localStorage.getItem("StudentToken");
                 if (!token) {
-                    console.error("DevToken 不存在，请检查");
+                    console.error("StudentToken 不存在，请检查");
                     return;
                 }
 
@@ -108,8 +108,7 @@ export default function UserProfilePage() {
 
                 const response = await fetch("http://localhost:3001/api/user/profile", {
                     method: "GET",
-                    headers: myHeaders,
-                    redirect: "follow" as RequestRedirect,
+                    headers: myHeaders
                 });
 
                 if (!response.ok) {
@@ -139,8 +138,7 @@ export default function UserProfilePage() {
                 const response = await fetch(
                     `http://localhost:3001/api/volunteer/query?user_id=${userData.id}`,
                     {
-                        method: "GET",
-                        redirect: "follow" as RequestRedirect,
+                        method: "GET"
                     }
                 );
 
@@ -164,8 +162,7 @@ export default function UserProfilePage() {
     useEffect(() => {
         if (userData) {
             const requestOptions = {
-                method: "GET",
-                redirect: "follow" as RequestRedirect,
+                method: "GET"
             };
 
             fetch(`http://localhost:3001/api/admission/results/${userData.id}`, requestOptions)
@@ -221,10 +218,9 @@ export default function UserProfilePage() {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("DevToken")
+                "Authorization": "Bearer " + localStorage.getItem("StudentToken")
             },
-            body: jsonData,
-            redirect: "follow" as RequestRedirect,
+            body: jsonData
         };
 
         try {
@@ -255,8 +251,7 @@ export default function UserProfilePage() {
             const requestOptions = {
                 method: "PUT",
                 headers: myHeaders,
-                body: raw,
-                redirect: "follow" as RequestRedirect,
+                body: raw
             };
 
             fetch(`http://localhost:3001/api/volunteer/update/${data.id}`, requestOptions)

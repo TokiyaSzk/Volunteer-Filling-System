@@ -22,15 +22,15 @@ export default function VolunteerPage() {
     const [userId, setUserId] = useState<string | undefined>("");
     const [volunteerData, setVolunteerData] = useState<volunteerData[]>([]);
 
-    // Fetch user data and set initial volunteer data
-    useEffect(() => {
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("DevToken"));
 
+    useEffect(() => {
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + localStorage.getItem("StudentToken"));
+        console.log(localStorage.getItem("StudentToken"));
         const requestOptions = {
-            method: "GET",
             headers: myHeaders,
-            redirect: "follow" as RequestRedirect,
+            method: "GET",
         };
 
         fetch("http://localhost:3001/api/user/profile", requestOptions)
@@ -57,26 +57,26 @@ export default function VolunteerPage() {
     const submitButtonClicked = () => {
         console.log(volunteerData);
 
-        try{
-        for (const data of volunteerData) {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+        try {
+            for (const data of volunteerData) {
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
 
-            const body = JSON.stringify(data);
+                const body = JSON.stringify(data);
 
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: body,
-                redirect: "follow" as RequestRedirect,
-            };
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: body
+                };
 
-            fetch("http://localhost:3001/api/volunteer/add", requestOptions)
-                .then((response) => response.text())
-                .then((result) => console.log(result))
-                .catch((error) => console.error(error));
-        }}
-        catch(error){
+                fetch("http://localhost:3001/api/volunteer/add", requestOptions)
+                    .then((response) => response.text())
+                    .then((result) => console.log(result))
+                    .catch((error) => console.error(error));
+            }
+        }
+        catch (error) {
             console.error(error)
         }
     };

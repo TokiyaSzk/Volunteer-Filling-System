@@ -40,6 +40,29 @@ router.get('/results/:user_id', (req, res) => {
         }
     );
 });
+// 查询某个学校的所有录取结果
+router.get('/school/:school_id', (req, res) => {
+    const school_id = req.params.school_id;
+
+    db.query(
+        'SELECT * FROM admissions WHERE school_id = ?',
+        [school_id],
+        (err, results) => {
+            if (err) {
+                console.error('Error fetching admissions:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            if (results.length === 0) {
+                res.status(404).send('No admissions found for this school');
+                return;
+            }
+
+            res.json(results);
+        }
+    );
+});
 
 // 添加录取结果
 router.post('/add', (req, res) => {
@@ -152,7 +175,8 @@ router.post('/start', async (req, res) => {
                 a.major_id,
                 a.priority,
                 u.score,
-                m.min_score
+                m.min_score,
+                m.max_admissions
             FROM applications a
             JOIN users u ON a.user_id = u.id
             JOIN majors m ON a.major_id = m.id
@@ -166,6 +190,17 @@ router.post('/start', async (req, res) => {
         const admittedUsers = new Set(); // 记录已录取用户ID
         const admissions = []; // 存储录取结果
 
+        // 查询当前每个专业的已录取人数
+        const [admittedCountResults] = await db.promise().query(`
+            SELECT major_id, COUNT(*) AS admitted_count 
+            FROM admissions 
+            GROUP BY major_id
+        `);
+        const admittedCountMap = admittedCountResults.reduce((map, row) => {
+            map[row.major_id] = row.admitted_count;
+            return map;
+        }, {});
+
         // 遍历志愿表进行录取
         for (const application of applications) {
             const {
@@ -173,7 +208,8 @@ router.post('/start', async (req, res) => {
                 school_id,
                 major_id,
                 score,
-                min_score
+                min_score,
+                max_admissions
             } = application;
 
             // 如果用户已经录取，跳过后续志愿
@@ -182,10 +218,15 @@ router.post('/start', async (req, res) => {
             }
 
             // 检查用户分数是否满足专业最低分数线
-            if (score >= min_score) {
-                // 录取用户
-                admissions.push([user_id, school_id, major_id, 1]); // batch 固定为 1
-                admittedUsers.add(user_id);
+            if (Number(score) >= Number(min_score)) {
+                // 检查该专业的录取人数是否已达到上限
+                const currentAdmittedCount = admittedCountMap[major_id] || 0;
+                if (currentAdmittedCount < max_admissions) {
+                    // 录取用户
+                    admissions.push([user_id, school_id, major_id, 1]); // batch 固定为 1
+                    admittedUsers.add(user_id);
+                    admittedCountMap[major_id] = currentAdmittedCount + 1; // 更新已录取人数
+                }
             }
         }
 

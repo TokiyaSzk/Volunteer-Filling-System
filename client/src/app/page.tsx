@@ -12,8 +12,7 @@ export default function Home() {
 
   const handleButtonClick = async () => {
     const requestOptions = {
-      method: "GET",
-      redirect: "follow" as RequestRedirect,
+      method: "GET"
     };
 
     setSignal(true);
