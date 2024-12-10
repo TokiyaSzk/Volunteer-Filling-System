@@ -114,7 +114,7 @@ export default function SchoolProfilePage() {
 
     return (
         <>
-            <div className="relative z-[1] w-full h-[900px] flex flex-col justify-center items-center text-black font-bold">
+            <div className="relative z-[1] w-full h-[900px] bg-gradient-to-br from-blue-200 via-gray-100 to-gray-200 flex flex-col justify-center items-center text-black font-bold">
                 <div className="text-2xl text-center">欢迎 {adminData?.username}<br></br>你的院校是{schoolData.name} 代码是{adminData?.school_id}</div>
 
                 <div className="flex justify-center items-center flex-row text-center space-x-4">

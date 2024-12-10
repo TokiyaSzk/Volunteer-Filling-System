@@ -37,8 +37,8 @@ export default function MajorPage() {
     return (
         <>
             <AnimatedComponent>
-                <div className="w-full h-[900px] flex justify-center items-cente text-black p-14">
-                    <div className="w-[500px] h-[600px] rounded-2xl bg-white border border-solid border-black shadow-lg hover:shadow-xl shadow-gray-500 hover:shadow-gray-700 transition-all duration-300 flex justify-center items-center">
+                <div className="w-full h-[900px] flex justify-center items-cente text-black p-14 bg-gradient-to-br from-blue-200 via-gray-100 to-gray-200">
+                    <div className="w-[500px] h-[600px] rounded-2xl bg-white border border-solid border-white shadow-lg hover:shadow-xl shadow-blue-300 hover:shadow-blue-700 transition-all duration-300 flex justify-center items-center">
                         <table className="table-auto ">
                             <thead>
                                 <tr>

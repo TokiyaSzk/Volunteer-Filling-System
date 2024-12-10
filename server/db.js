@@ -1,20 +1,20 @@
 // db.js
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-    host: 'db',
-    user: 'root',
-    password: 'rootpassword',
-    database: 'dev',
-    port: 3306
-});
-
 // const db = mysql.createConnection({
-//     host: 'localhost',
+//     host: 'db',
 //     user: 'root',
-//     password: 'Caierh521.',
+//     password: 'rootpassword',
+//     database: 'dev',
 //     port: 3306
 // });
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Caierh521.',
+    port: 3306
+});
 
 db.connect((err) => {
     if (err) {

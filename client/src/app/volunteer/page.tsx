@@ -84,7 +84,7 @@ export default function VolunteerPage() {
     return (
         <>
             <AnimatedComponent>
-                <div className="w-full h-[900px] text-black font-bold text-center flex justify-center items-center">
+                <div className="w-full h-[900px] text-black font-bold text-center flex justify-center items-center bg-gradient-to-br from-blue-200 via-gray-100 to-gray-200">
                     <div className="w-8/12 h-5/6 bg-white border border-solid rounded-2xl shadow-sm shadow-gray-500 p-4">
                         {volunteerData.map((data, index) => (
                             <div key={index}>

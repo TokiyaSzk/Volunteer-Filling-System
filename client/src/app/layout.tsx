@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <div className="flex justify-center items-center w-full h-16 text-xl bg-gradient-to-r from-white to-gray-100 text-gray-800 space-x-10 py-4 font-bold shadow-md">
           <div className="w-16 h-12 flex items-center justify-center text-gray-800 hover:text-blue-700 transition-all duration-300 hover:scale-110">
@@ -47,7 +47,7 @@ export default function RootLayout({
           </div>
         </div>
         {children}
-        <div className="w-full h-12 bg-gray-500">
+        <div className="w-full h-12 ">
           <div className="flex justify-center items-center h-full text-white">
             © 2024 Volunteer Filling System. All rights reserved. 版权所有: <a href="https://github.com/TokiyaSzk">Tokiya(Wang Kuicheng)</a>
           </div>

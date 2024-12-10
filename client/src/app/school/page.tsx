@@ -1,5 +1,6 @@
 "use client";
 
+import AnimatedComponent from "@/component/AnimateComponent";
 import { useEffect, useState } from "react"
 
 interface schoolData {
@@ -75,74 +76,74 @@ export default function SchoolPage() {
 
     return (
         <>
-            <div className="relative z-[1] w-full h-[900px] bg-white flex items-center justify-center flex-col space-y-5 text-black font-bold">
-                <div className="w-[500px] h-[600px] rounded-2xl bg-white border border-solid border-black shadow-lg hover:shadow-xl shadow-gray-500 hover:shadow-gray-700 transition-all duration-300 flex justify-center items-center">
+            <AnimatedComponent>
+                <div className="relative z-[1] w-full h-[900px] bg-gradient-to-br from-blue-200 via-gray-100 to-gray-200 flex items-center justify-center flex-col space-y-5 text-black font-bold">
+                    <div className="w-[500px] h-[600px] rounded-2xl bg-white border border-solid border-white shadow-lg hover:shadow-xl shadow-blue-300 hover:shadow-blue-700 transition-all duration-300 flex justify-center items-center">
+                        <table className="table-auto ">
+                            <thead>
+                                <tr>
+                                    <th className="px-4 py-2">Id</th>
+                                    <th className="px-4 py-2">Name</th>
+                                    <th className="px-4 py-2">Province</th>
+                                    <th className="px-4 py-2">Ranking</th>
+                                    <th className="px-4 py-2">Category</th>
+                                </tr>
+                            </thead>
+                            {school && school.map((school: any) => {
+                                return (
+                                    <tbody key={school.id}>
+                                        <tr >
+                                            <td className="border px-4 py-2">{school.id}</td>
+                                            <td className="border px-4 py-2">{school.name}</td>
+                                            <td className="border px-4 py-2">{school.province}</td>
+                                            <td className="border px-4 py-2">{school.ranking}</td>
+                                            <td className="border px-4 py-2">{school.category}</td>
+                                        </tr>
+                                    </tbody>
+                                )
 
-                    <table className="table-auto ">
-                        <thead>
-                            <tr>
-                                <th className="px-4 py-2">Id</th>
-                                <th className="px-4 py-2">Name</th>
-                                <th className="px-4 py-2">Province</th>
-                                <th className="px-4 py-2">Ranking</th>
-                                <th className="px-4 py-2">Category</th>
-                            </tr>
-                        </thead>
-                        {school && school.map((school: any) => {
-                            return (
-                                <tbody key={school.id}>
-                                    <tr >
-                                        <td className="border px-4 py-2">{school.id}</td>
-                                        <td className="border px-4 py-2">{school.name}</td>
-                                        <td className="border px-4 py-2">{school.province}</td>
-                                        <td className="border px-4 py-2">{school.ranking}</td>
-                                        <td className="border px-4 py-2">{school.category}</td>
-                                    </tr>
-                                </tbody>
-                            )
-
-                        })}
-                    </table>
-                </div>
-                <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
-                    <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={displayLogin}>
-                        学校登陆
-                    </button>
-                </div>
-                {schoolLogin &&
-                    <div className='fixed inset-0 w-screen h-screen z-[50] bg-gray-500 bg-opacity-20 flex justify-center items-center'>
-                        <div className='w-[300px] h-[550px] bg-white rounded-2xl p-14 pt-8 overflow-auto'>
-                            <div className='space-y-2'>
-                                <div className="w-full h-10 text-2xl tracking-widest text-center">账户登陆</div>
-                                <div className="space-y-2">
-                                    <label htmlFor="">账户名</label>
-                                    <input type="text" name="username" placeholder=" " className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-                                        onChange={handleChange} />
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="">密码</label>
-                                    <input type="text" name="password" placeholder=" " className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
-                                        onChange={handleChange} />
-                                </div>
-                                <div className="flex flex-row justify-center items-center ">
-                                    <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
-                                        <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={hiddenLogin}>
-                                            取消
-                                        </button>
+                            })}
+                        </table>
+                    </div>
+                    <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
+                        <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={displayLogin}>
+                            学校登陆
+                        </button>
+                    </div>
+                    {schoolLogin &&
+                        <div className='fixed inset-0 w-screen h-screen z-[50] bg-gray-500 bg-opacity-20 flex justify-center items-center'>
+                            <div className='w-[300px] h-[550px] bg-white rounded-2xl p-14 pt-8 overflow-auto'>
+                                <div className='space-y-2'>
+                                    <div className="w-full h-10 text-2xl tracking-widest text-center">账户登陆</div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="">账户名</label>
+                                        <input type="text" name="username" placeholder=" " className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                                            onChange={handleChange} />
                                     </div>
-                                    <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
-                                        <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={loginButtonClick}>
-                                            登陆
-                                        </button>
+                                    <div className="space-y-2">
+                                        <label htmlFor="">密码</label>
+                                        <input type="text" name="password" placeholder=" " className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                                            onChange={handleChange} />
                                     </div>
-                                </div>
+                                    <div className="flex flex-row justify-center items-center ">
+                                        <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
+                                            <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={hiddenLogin}>
+                                                取消
+                                            </button>
+                                        </div>
+                                        <div className=" rounded-xl shadow-lg p-2 hover:shadow-xl hover:scale-110 transition-all duration-300">
+                                            <button className="text-blue-500 hover:text-blue-700 transition-all duration-300" onClick={loginButtonClick}>
+                                                登陆
+                                            </button>
+                                        </div>
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
-
+                    }
+                </div>
+            </AnimatedComponent>
         </>
     )
 }

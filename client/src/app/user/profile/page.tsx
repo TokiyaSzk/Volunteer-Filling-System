@@ -266,7 +266,7 @@ export default function UserProfilePage() {
 
     return (
         <>
-            <div className="relative z-[1] w-full h-[1000px] text-black font-bold">
+            <div className="relative z-[1] w-full h-[1000px] text-black font-bold bg-gradient-to-br from-blue-200 via-gray-100 to-gray-200">
                 <div className='w-full h-24 text-center pt-10 text-2xl text-red-600 justify-center items-center'>请先确认你的信息，然后再点击填报志愿</div>
                 {userData ? (
                     <>
