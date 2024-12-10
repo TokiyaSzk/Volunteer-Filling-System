@@ -39,11 +39,11 @@ export default function SchoolProfilePage() {
         school_id: "0",
         username: "admin"
     });
-    const token = localStorage.getItem("AdminToken");
 
     // 获取Admin信息
     useEffect(() => {
         const myHeaders = new Headers();
+        const token = localStorage.getItem("AdminToken");
         myHeaders.append("Authorization", "Bearer " + token);
 
         const requestOptions = {
@@ -58,7 +58,7 @@ export default function SchoolProfilePage() {
                 setAdminData(JSON.parse(result));
             })
             .catch((error) => console.error(error));
-    }, [token]);
+    },[]);
 
     // 获取学校信息
     useEffect(() => {
