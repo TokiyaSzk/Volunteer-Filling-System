@@ -71,7 +71,16 @@ export default function VolunteerPage() {
                 };
 
                 fetch("http://localhost:3001/api/volunteer/add", requestOptions)
-                    .then((response) => response.text())
+                    .then((response) => {
+                        response.text();
+                        if (response.status === 201) {
+                            alert("志愿提交成功")
+                            window.location.href = "/user/profile";
+                        }
+                        else {
+                            alert("志愿提交失败")
+                        }
+                    })
                     .then((result) => console.log(result))
                     .catch((error) => console.error(error));
             }

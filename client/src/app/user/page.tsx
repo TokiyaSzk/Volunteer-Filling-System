@@ -32,6 +32,11 @@ export default function UserPage() {
         try {
             const response = await fetch(url, requestOptions);
             const result = await response.text();
+            if(response.status === 201){
+                alert("注册成功")
+            }else{
+                alert("注册失败")
+            }
             console.log(result);
             window.location.href = "/user";
         } catch (error) {
